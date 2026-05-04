@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Serenify – Your AI-powered sonic landscape. Discover music tuned to your mood, manage your library, and explore personalised recommendations." />
+  <title>Serenify – 3D Music Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;600;700;900&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <span class="logo-dot"></span>
+      <span class="logo-text">Serenify</span>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active" id="nav-home" onclick="showPage('home', this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+          <polyline points="9,22 9,12 15,12 15,22" />
+        </svg>
+        <span>Home</span>
+      </a>
+      <a href="#" class="nav-item" id="nav-add" onclick="showPage('add', this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10" />
+          <line x1="12" y1="8" x2="12" y2="16" />
+          <line x1="8" y1="12" x2="16" y2="12" />
+        </svg>
+        <span>Add Song</span>
+      </a>
+      <a href="#" class="nav-item" id="nav-lib" onclick="showPage('library', this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
+        </svg>
+        <span>Library</span>
+      </a>
+    </nav>
+
+    <div class="now-playing-sidebar" id="sidebar-player">
+      <p class="np-label">NOW PLAYING</p>
+      <div class="np-track">
+        <img id="np-thumb" src="images/neon_dreams.png" alt="Now playing" />
+        <div>
+          <p id="np-title">Neon Dreams</p>
+          <p id="np-artist" class="np-artist">Synthwave</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Top Bar -->
+    <header class="topbar">
+      <button class="menu-btn" id="menu-btn" onclick="toggleSidebar()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="6" x2="21" y2="6" />
+          <line x1="3" y1="18" x2="21" y2="18" />
+        </svg>
+      </button>
+      <div class="search-bar">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
+       <input id="search-input" type="text" placeholder="Search songs, artists, moods..." oninput="handleSearch()" />
+      </div>
+      <div class="topbar-right">
+        <button class="icon-btn" title="Notifications">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9" />
+            <path d="M13.73 21a2 2 0 01-3.46 0" />
+          </svg>
+        </button>
+        <div class="avatar">A</div>
+      </div>
+    </header>
+
+    <!-- Pages -->
+    <div class="pages-wrapper">
+
+      <!-- =========== HOME / RECOMMENDATIONS PAGE =========== -->
+      <section class="page active" id="page-home">
+        <div class="mood-hero" id="mood-hero">
+          <div class="mood-hero-content">
+            <span class="mood-badge">ACTIVE MOOD PROFILE</span>
+            <h1>Picked for your<br /><span class="mood-highlight" id="mood-label">Mood: Energetic</span></h1>
+            <p class="mood-desc">High-tempo sonic landscapes curated to elevate your current frequency. Sculpting energy
+              through sound.</p>
+          </div>
+          <button class="refresh-btn" onclick="refreshMix()" title="Refresh Mix">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="23 4 23 10 17 10" />
+              <path d="M20.49 15a9 9 0 11-2.12-9.36L23 10" />
+            </svg>
+            <span>REFRESH MIX</span>
+          </button>
+        </div>
+
+        <!-- Mood Filter Pills -->
+        <div class="mood-filters">
+          <span class="mood-pill active" onclick="setMood('Energetic', this)">⚡ Energetic</span>
+          <span class="mood-pill" onclick="setMood('Calm', this)">🌊 Calm</span>
+          <span class="mood-pill" onclick="setMood('Focused', this)">🎯 Focused</span>
+          <span class="mood-pill" onclick="setMood('Melancholy', this)">🌙 Melancholy</span>
+          <span class="mood-pill" onclick="setMood('Happy', this)">☀️ Happy</span>
+        </div>
+
+        <!-- Currently Playing Carousel -->
+        <div class="rec-section">
+          <h2 class="section-title">Now Trending</h2>
+          <div class="rec-cards" id="rec-cards">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- Music Player -->
+        <div class="player-bar" id="player-bar">
+          <button class="player-btn" onclick="prevTrack()" title="Previous">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="19,20 9,12 19,4" />
+              <line x1="5" y1="19" x2="5" y2="5" stroke="currentColor" stroke-width="2" />
+            </svg>
+          </button>
+          <button class="play-btn" id="play-btn" onclick="togglePlay()">
+            <svg id="play-icon" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="5,3 19,12 5,21" />
+            </svg>
+          </button>
+          <button class="player-btn" onclick="nextTrack()" title="Next">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="5,4 15,12 5,20" />
+              <line x1="19" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2" />
+            </svg>
+          </button>
+          <div class="player-track-info">
+            <span id="player-title">Neon Dreams</span>
+            <span id="player-meta" class="player-meta">Synthwave · 124 BPM</span>
+          </div>
+          <div class="progress-container">
+            <div class="progress-bar" id="progress-bar">
+              <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <div class="time-labels">
+              <span id="current-time">0:00</span>
+              <span id="total-time">3:42</span>
+            </div>
+          </div>
+          <div class="volume-control">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="volume-icon">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+              <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+            </svg>
+            <input type="range" id="volume-slider" min="0" max="100" value="75" class="volume-slider"
+              oninput="setVolume(this.value)" />
+          </div>
+        </div>
+
+        <!-- Sonic Profile -->
+        <div class="sonic-profile">
+          <div class="sonic-text">
+            <h2>Your Sonic Profile<br />is peaking.</h2>
+            <p>You've explored <strong>42 energetic tracks</strong> this week. Your resonance with high-frequency music
+              has increased by 15%.</p>
+            <div class="sonic-stats">
+              <div class="stat-item">
+                <span class="stat-label">DOMINANT FREQUENCY</span>
+                <span class="stat-value cyan">High-Mid</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">SYNCOPATION</span>
+                <span class="stat-value orange">92%</span>
+              </div>
+            </div>
+          </div>
+          <div class="sonic-visualizer">
+            <p class="viz-label">REAL-TIME SPECTRAL ANALYSIS</p>
+            <div class="bars-container" id="spectral-bars">
+              <!-- Generated by JS -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========== ADD SONG PAGE =========== -->
+      <section class="page" id="page-add">
+        <div class="page-header">
+          <h1 class="page-title">Add a New Track</h1>
+          <p class="page-subtitle">Expand your sonic universe – add songs to your personal library.</p>
+        </div>
+        <form class="add-song-form" id="add-song-form">
+			<!-- Replace the form-grid div inside page-add -->
+			<div class="form-grid">
+			  <div class="form-group">
+			    <label for="song-title">Song Title *</label>
+			    <input type="text" id="song-title" placeholder="e.g. Neon Dreams" required />
+			  </div>
+			  <div class="form-group">
+			    <label for="song-artist">Artist / Composer *</label>
+			    <input type="text" id="song-artist" placeholder="e.g. Lumina" required />
+			  </div>
+			  <div class="form-group">
+			    <label for="song-genre">Genre *</label>
+			    <select id="song-genre" required>
+			      <option value="" disabled selected>Select a Genre</option>
+			      <option value="Synthwave">Synthwave</option>
+			      <option value="Hyperpop">Hyperpop</option>
+			      <option value="Experimental">Experimental</option>
+			      <option value="Deep House">Deep House</option>
+			      <option value="Techno">Techno</option>
+			      <option value="Ambient">Ambient</option>
+			      <option value="Lo-Fi">Lo-Fi</option>
+			      <option value="Classical">Classical</option>
+			      <option value="Jazz">Jazz</option>
+			      <option value="R&B">R&amp;B</option>
+				  <option value="Bollywood">Bollywood</option>
+				  <option value="Indie">Indie</option>
+				  <option value="Folk">folk</option>
+			      <option value="Pop">Pop</option>
+			      <option value="Rock">Rock</option>
+			    </select>
+			  </div>
+			  <div class="form-group">
+			    <label for="song-mood">Mood *</label>
+			    <select id="song-mood" required>
+			      <option value="" disabled selected>Select Mood</option>
+			      <option value="Energetic">Energetic</option>
+			      <option value="Calm">Calm</option>
+			      <option value="Focused">Focused</option>
+			      <option value="Melancholy">Melancholy</option>
+			      <option value="Happy">Happy</option>
+			    </select>
+			  </div>
+			  <div class="form-group">
+			    <label for="song-bpm">BPM</label>
+			    <input type="number" id="song-bpm" placeholder="e.g. 120" min="40" max="300" />
+			  </div>
+			  <div class="form-group">
+			    <label for="song-language">Language</label>
+			    <select id="song-language">
+			      <option value="" disabled selected>Select Language</option>
+			      <option value="Hindi">Hindi</option>
+			      <option value="English">English</option>
+			      <option value="Punjabi">Punjabi</option>
+			      <option value="Tamil">Tamil</option>
+			      <option value="Telugu">Telugu</option>
+			      <option value="Other">Other</option>
+			    </select>
+			  </div>
+			</div>
+
+			<div class="form-group full-width">
+			  <label for="song-description">Description</label>
+			  <textarea id="song-description" placeholder="Describe the vibe, story, or feel of this track..." rows="3"></textarea>
+			</div>
+
+			<!-- Audio Upload -->
+			<div class="form-group full-width">
+			  <label>Audio File * (MP3, WAV, OGG)</label>
+			  <div class="audio-upload-zone" id="audio-upload-zone" onclick="document.getElementById('song-audio').click()">
+			    <input type="file" id="song-audio" accept="audio/*" style="display:none" onchange="handleAudioUpload(event)" />
+			    <div id="upload-placeholder">
+			      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:36px;height:36px;color:#7c3aed;margin-bottom:10px">
+			        <path d="M9 19V6l12-3v13"/>
+			        <circle cx="6" cy="19" r="3"/><circle cx="18" cy="16" r="3"/>
+			      </svg>
+			      <p style="color:#a78bfa;font-weight:600;margin:0">Click to upload audio</p>
+			      <p style="color:#666688;font-size:12px;margin:4px 0 0">MP3, WAV or OGG · Max 20MB</p>
+			    </div>
+			    <div id="upload-preview" style="display:none">
+			      <svg viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2" style="width:24px;height:24px">
+			        <polyline points="20 6 9 17 4 12"/>
+			      </svg>
+			      <div>
+			        <p id="upload-filename" style="color:#f0f0f8;font-weight:600;margin:0;font-size:14px"></p>
+			        <p id="upload-filesize" style="color:#666688;font-size:12px;margin:4px 0 0"></p>
+			      </div>
+			      <audio id="upload-audio-preview" controls style="margin-left:auto;height:32px;accent-color:#7c3aed;"></audio>
+			    </div>
+			  </div>
+			</div>
+         
+
+          <div class="form-actions">
+            <button type="button" class="btn-secondary" onclick="resetForm()">Reset</button>
+            <button type="submit" class="btn-primary" id="add-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+              Add to Library
+            </button>
+          </div>
+        </form>
+
+        <!-- Success Toast -->
+        <div class="toast" id="toast">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+          Song added successfully!
+        </div>
+      </section>
+
+      <!-- =========== LIBRARY PAGE =========== -->
+      <section class="page" id="page-library">
+        <div class="library-header">
+          <div class="page-header">
+            <h1 class="page-title">My Library</h1>
+            <p class="page-subtitle" id="lib-count">6 tracks · 3 composers</p>
+          </div>
+          <div class="lib-filter-row">
+            <button class="filter-tab active" onclick="filterLibrary('all', this)" id="filter-all">ALL</button>
+            <button class="filter-tab" onclick="filterLibrary('genre', this)" id="filter-genre">GENRE</button>
+            <button class="filter-tab" onclick="filterLibrary('tempo', this)" id="filter-tempo">TEMPO</button>
+            <span class="mood-chip calm" onclick="filterLibrary('calm', this)">● Calm</span>
+            <span class="mood-chip energetic" onclick="filterLibrary('energetic', this)">● Energetic</span>
+            <span class="mood-chip focused" onclick="filterLibrary('focused', this)">● Focused</span>
+          </div>
+        </div>
+
+        <div class="song-grid" id="song-grid">
+          <!-- Populated by JS -->
+        </div>
+
+        <!-- Library Player -->
+        <div class="player-bar lib-player" id="lib-player-bar">
+          <button class="player-btn" onclick="prevTrack()" title="Previous">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="19,20 9,12 19,4" />
+              <line x1="5" y1="19" x2="5" y2="5" stroke="currentColor" stroke-width="2" />
+            </svg>
+          </button>
+          <button class="play-btn" id="lib-play-btn" onclick="togglePlay()">
+            <svg id="lib-play-icon" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="5,3 19,12 5,21" />
+            </svg>
+          </button>
+          <button class="player-btn" onclick="nextTrack()" title="Next">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="5,4 15,12 5,20" />
+              <line x1="19" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2" />
+            </svg>
+          </button>
+          <div class="player-track-info">
+            <span id="lib-player-title">Neon Dreams</span>
+            <span id="lib-player-meta" class="player-meta">Synthwave · 124 BPM</span>
+          </div>
+          <div class="progress-container">
+            <div class="progress-bar">
+              <div class="progress-fill" id="lib-progress-fill"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+
+</html>

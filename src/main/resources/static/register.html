@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register — Serenify</title>
+  <meta name="description" content="Create your Serenify account and start your mood-aware music journey." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;600;700;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg-0: #0a0a12; --bg-1: #0f0f1e; --bg-2: #14142a; --bg-3: #1c1c38;
+      --glass: rgba(255,255,255,0.06); --glass-border: rgba(255,255,255,0.1);
+      --purple: #7c3aed; --purple-lt: #9d63f7; --purple-glow: rgba(124,58,237,0.4);
+      --accent: #a78bfa; --teal: #2dd4bf; --pink: #f472b6; --cyan: #38bdf8;
+      --text-1: #f0f0f8; --text-2: #a0a0c0; --text-3: #666688;
+      --radius-sm: 10px; --radius-md: 16px; --radius-lg: 22px; --radius-xl: 28px;
+      --shadow-glow: 0 0 24px var(--purple-glow);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-0);
+      color: var(--text-1);
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      overflow-y: auto; position: relative;
+    }
+    /* Background */
+    .bg-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .bg-orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.35; animation: orb-drift var(--dur,12s) ease-in-out infinite alternate; }
+    .bg-orb-1 { width:500px;height:500px;background:radial-gradient(circle,#7c3aed,transparent 70%);top:-120px;left:-100px;--dur:14s; }
+    .bg-orb-2 { width:380px;height:380px;background:radial-gradient(circle,#f472b6,transparent 70%);bottom:-80px;right:-60px;--dur:10s; }
+    .bg-orb-3 { width:280px;height:280px;background:radial-gradient(circle,#2dd4bf,transparent 70%);top:50%;left:55%;--dur:18s; }
+    @keyframes orb-drift { from{transform:translate(0,0) scale(1);} to{transform:translate(40px,30px) scale(1.08);} }
+    .bg-canvas::after {
+      content:''; position:absolute; inset:0;
+      background-image: linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px), linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px);
+      background-size:48px 48px;
+    }
+    .wave-decoration { position:fixed;bottom:0;left:0;right:0;height:80px;display:flex;align-items:flex-end;gap:3px;padding:0 20px 12px;z-index:0;opacity:0.12;pointer-events:none; }
+    .wave-bar { flex:1;border-radius:4px 4px 0 0;background:linear-gradient(to top,var(--purple),var(--pink));animation:wave-anim var(--d,1s) ease-in-out infinite alternate; }
+    @keyframes wave-anim { from{transform:scaleY(0.15);} to{transform:scaleY(1);} }
+
+    /* Card */
+    .register-wrapper { position:relative;z-index:10;width:100%;max-width:440px;padding:32px 16px;animation:card-in .6s cubic-bezier(.215,.61,.355,1) both; }
+    @keyframes card-in { from{opacity:0;transform:translateY(32px) scale(0.97);} to{opacity:1;transform:translateY(0) scale(1);} }
+    .register-card {
+      background: linear-gradient(145deg,rgba(20,20,42,0.92) 0%,rgba(28,28,56,0.85) 100%);
+      border:1px solid var(--glass-border); border-radius:var(--radius-xl);
+      padding:40px 40px 36px;
+      backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+      box-shadow:0 24px 80px rgba(0,0,0,0.6),0 0 0 1px rgba(255,255,255,0.04) inset,var(--shadow-glow);
+      position:relative; overflow:hidden;
+    }
+    .register-card::before { content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent); }
+    .register-card::after { content:'';position:absolute;top:-60px;right:-60px;width:180px;height:180px;background:radial-gradient(circle,rgba(124,58,237,0.2) 0%,transparent 70%);pointer-events:none; }
+
+    /* Brand */
+    .brand { display:flex;flex-direction:column;align-items:center;margin-bottom:32px;text-align:center; }
+    .brand-logo { display:flex;align-items:center;gap:10px;margin-bottom:16px; }
+    .logo-dot { width:12px;height:12px;border-radius:50%;background:var(--purple);box-shadow:0 0 12px var(--purple);animation:pulse-dot 2s ease-in-out infinite; }
+    @keyframes pulse-dot { 0%,100%{box-shadow:0 0 8px var(--purple);} 50%{box-shadow:0 0 22px var(--purple),0 0 44px rgba(124,58,237,0.3);} }
+    .logo-text { font-family:'Outfit',sans-serif;font-size:24px;font-weight:700;color:var(--purple-lt);letter-spacing:0.5px; }
+    .mood-badge-reg { display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:700;letter-spacing:1.6px;color:var(--teal);background:rgba(45,212,191,0.1);border:1px solid rgba(45,212,191,0.28);padding:5px 12px 5px 8px;border-radius:20px;margin-bottom:16px; }
+    .mood-badge-reg .dot { width:6px;height:6px;border-radius:50%;background:var(--teal);display:inline-block;animation:pulse-teal 2s ease-in-out infinite;box-shadow:0 0 6px var(--teal); }
+    @keyframes pulse-teal { 0%,100%{box-shadow:0 0 6px var(--teal);} 50%{box-shadow:0 0 16px var(--teal);} }
+    .brand-icon-wrap { width:64px;height:64px;border-radius:18px;background:rgba(45,212,191,0.1);border:1px solid rgba(45,212,191,0.28);display:flex;align-items:center;justify-content:center;margin-bottom:18px;box-shadow:0 0 28px rgba(45,212,191,0.15); }
+    .brand-icon-wrap svg { width:30px;height:30px;color:var(--teal); }
+    .brand h1 { font-family:'Outfit',sans-serif;font-size:26px;font-weight:700;color:var(--text-1);margin-bottom:8px;line-height:1.2; }
+    .brand p { font-size:13.5px;color:var(--text-2);line-height:1.55; }
+
+    /* Form */
+    .register-form { display:flex;flex-direction:column;gap:18px; }
+    .form-group { display:flex;flex-direction:column;gap:8px; }
+    .form-group label { font-size:12px;font-weight:600;color:var(--text-2);letter-spacing:0.6px;text-transform:uppercase; }
+    .input-wrap { position:relative;display:flex;align-items:center; }
+    .input-icon { position:absolute;left:14px;width:16px;height:16px;color:var(--text-3);pointer-events:none;transition:color .2s;flex-shrink:0; }
+    .form-group input {
+      width:100%; background:var(--bg-3); border:1px solid var(--glass-border);
+      border-radius:var(--radius-sm); padding:13px 14px 13px 42px;
+      color:var(--text-1); font-family:'Inter',sans-serif; font-size:14px;
+      outline:none; transition:border-color .25s,box-shadow .25s,background .25s; -webkit-appearance:none;
+    }
+    .form-group input::placeholder { color:var(--text-3); }
+    .form-group input:focus { border-color:var(--purple);background:rgba(28,28,56,0.9);box-shadow:0 0 0 3px rgba(124,58,237,0.18); }
+    .input-wrap:focus-within .input-icon { color:var(--purple-lt); }
+    .toggle-pw { position:absolute;right:14px;background:none;border:none;cursor:pointer;color:var(--text-3);padding:0;display:flex;align-items:center;transition:color .2s; }
+    .toggle-pw:hover { color:var(--text-2); }
+    .toggle-pw svg { width:16px;height:16px; }
+
+    /* Password strength */
+    .strength-bar { display:flex;gap:4px;margin-top:6px; }
+    .strength-seg { flex:1;height:3px;border-radius:10px;background:var(--bg-3);transition:background .3s; }
+    .strength-label { font-size:11px;color:var(--text-3);margin-top:4px;transition:color .3s; }
+
+    /* Submit */
+    .btn-register {
+      width:100%; background:linear-gradient(135deg,var(--teal) 0%,#0891b2 100%);
+      color:#fff; border:none; border-radius:var(--radius-sm);
+      padding:14px 24px; font-size:15px; font-weight:600;
+      font-family:'Inter',sans-serif; cursor:pointer;
+      transition:transform .2s,box-shadow .2s,filter .2s;
+      box-shadow:0 4px 24px rgba(45,212,191,0.35);
+      display:flex;align-items:center;justify-content:center;gap:8px;
+      letter-spacing:0.3px; position:relative; overflow:hidden; margin-top:4px;
+    }
+    .btn-register::before { content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.12),transparent);transition:left .5s; }
+    .btn-register:hover { transform:translateY(-2px);box-shadow:0 8px 36px rgba(45,212,191,0.45);filter:brightness(1.08); }
+    .btn-register:hover::before { left:100%; }
+    .btn-register:active { transform:translateY(0); }
+    .btn-register svg { width:16px;height:16px; }
+    .btn-register:disabled { opacity:0.5;cursor:not-allowed;transform:none; }
+
+    /* Divider / login link */
+    .divider { display:flex;align-items:center;gap:12px;color:var(--text-3);font-size:11px;font-weight:500;letter-spacing:1px; }
+    .divider::before,.divider::after { content:'';flex:1;height:1px;background:var(--glass-border); }
+    .login-prompt { text-align:center;font-size:13.5px;color:var(--text-2); }
+    .login-prompt a { color:var(--purple-lt);text-decoration:none;font-weight:600;transition:color .2s; }
+    .login-prompt a:hover { color:var(--accent); }
+
+    /* Toast */
+    .toast { position:fixed;bottom:32px;right:32px;background:linear-gradient(135deg,#1a1a38,#222240);border:1px solid var(--purple);border-radius:var(--radius-md);padding:16px 24px;display:flex;align-items:center;gap:10px;font-size:14px;font-weight:500;color:var(--text-1);box-shadow:0 8px 32px rgba(0,0,0,0.5),var(--shadow-glow);transform:translateY(80px);opacity:0;transition:all .4s cubic-bezier(.175,.885,.32,1.275);z-index:999; }
+    .toast.show { transform:translateY(0);opacity:1; }
+    .toast svg { width:18px;height:18px;color:#4ade80;flex-shrink:0; }
+
+    ::-webkit-scrollbar{width:5px;} ::-webkit-scrollbar-track{background:transparent;} ::-webkit-scrollbar-thumb{background:var(--bg-3);border-radius:10px;}
+    @media(max-width:480px){.register-card{padding:32px 20px 28px;}.brand h1{font-size:22px;}}
+  </style>
+</head>
+<body>
+
+<div class="bg-canvas" aria-hidden="true">
+  <div class="bg-orb bg-orb-1"></div>
+  <div class="bg-orb bg-orb-2"></div>
+  <div class="bg-orb bg-orb-3"></div>
+</div>
+<div class="wave-decoration" aria-hidden="true" id="waveDecoration"></div>
+
+<main class="register-wrapper">
+  <div class="register-card">
+
+    <div class="brand">
+      <div class="brand-logo">
+        <div class="logo-dot"></div>
+        <span class="logo-text">Serenify</span>
+      </div>
+      <div class="mood-badge-reg"><span class="dot"></span>NEW ACCOUNT</div>
+      <div class="brand-icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/>
+        </svg>
+      </div>
+      <h1>Create your account</h1>
+      <p>Join Serenify and let music match your mood.</p>
+    </div>
+
+    <form class="register-form" id="registerForm" novalidate>
+
+      <!-- Username -->
+      <div class="form-group">
+        <label for="username">Username</label>
+        <div class="input-wrap">
+          <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+          <input type="text" id="username" name="username" placeholder="Choose a username" autocomplete="username" required />
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="input-wrap">
+          <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+          <input type="password" id="password" name="password" placeholder="Create a strong password" autocomplete="new-password" required />
+          <button type="button" class="toggle-pw" id="togglePw" aria-label="Toggle password visibility">
+            <svg id="eyeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </div>
+        <div class="strength-bar" id="strengthBar">
+          <div class="strength-seg" id="s1"></div>
+          <div class="strength-seg" id="s2"></div>
+          <div class="strength-seg" id="s3"></div>
+          <div class="strength-seg" id="s4"></div>
+        </div>
+        <span class="strength-label" id="strengthLabel"></span>
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <div class="input-wrap">
+          <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Repeat your password" autocomplete="new-password" required />
+        </div>
+      </div>
+
+      <button type="submit" class="btn-register" id="registerBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/>
+        </svg>
+        Create Account
+      </button>
+
+      <div class="divider">OR</div>
+      <p class="login-prompt">Already have an account?&nbsp;<a href="/login.html" id="loginLink">Sign in</a></p>
+    </form>
+  </div>
+</main>
+
+<!-- Toast -->
+<div class="toast" id="toast" role="alert" aria-live="polite">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <polyline points="20 6 9 17 4 12"/>
+  </svg>
+  <span id="toastMsg">Registered successfully!</span>
+</div>
+
+<script>
+  /* Wave bars */
+  const waveCnt = document.getElementById('waveDecoration');
+  const barCount = Math.floor(window.innerWidth / 10);
+  for (let i = 0; i < barCount; i++) {
+    const bar = document.createElement('div');
+    bar.className = 'wave-bar';
+    bar.style.setProperty('--d', (0.4 + Math.random() * 1.4).toFixed(2) + 's');
+    bar.style.height = (20 + Math.random() * 60) + 'px';
+    waveCnt.appendChild(bar);
+  }
+
+  /* Password toggle */
+  const toggleBtn = document.getElementById('togglePw');
+  const pwInput   = document.getElementById('password');
+  const eyeIcon   = document.getElementById('eyeIcon');
+  const eyeOpen  = `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>`;
+  const eyeClose = `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>`;
+  toggleBtn.addEventListener('click', () => {
+    const hidden = pwInput.type === 'password';
+    pwInput.type = hidden ? 'text' : 'password';
+    eyeIcon.innerHTML = hidden ? eyeClose : eyeOpen;
+    toggleBtn.setAttribute('aria-label', hidden ? 'Hide password' : 'Show password');
+  });
+
+  /* Password strength */
+  const segs  = [document.getElementById('s1'), document.getElementById('s2'), document.getElementById('s3'), document.getElementById('s4')];
+  const label = document.getElementById('strengthLabel');
+  const colors = ['#ef4444','#fb923c','#facc15','#4ade80'];
+  const labels = ['Weak','Fair','Good','Strong'];
+
+  pwInput.addEventListener('input', () => {
+    const v = pwInput.value;
+    let score = 0;
+    if (v.length >= 8) score++;
+    if (/[A-Z]/.test(v)) score++;
+    if (/[0-9]/.test(v)) score++;
+    if (/[^A-Za-z0-9]/.test(v)) score++;
+    segs.forEach((s, i) => { s.style.background = i < score ? colors[score - 1] : 'var(--bg-3)'; });
+    label.textContent = v.length ? labels[score - 1] || '' : '';
+    label.style.color = v.length && score ? colors[score - 1] : 'var(--text-3)';
+  });
+
+  /* Icon focus colors */
+  document.querySelectorAll('.input-wrap input').forEach(input => {
+    const icon = input.parentElement.querySelector('.input-icon');
+    input.addEventListener('focus', () => { if (icon) icon.style.color = 'var(--purple-lt)'; });
+    input.addEventListener('blur',  () => { if (icon) icon.style.color = ''; });
+  });
+
+  /* Toast helper */
+  function showToast(msg, isError = false) {
+    const toast = document.getElementById('toast');
+    document.getElementById('toastMsg').textContent = msg;
+    toast.style.borderColor = isError ? '#ef4444' : 'var(--purple)';
+    toast.querySelector('svg').style.color = isError ? '#ef4444' : '#4ade80';
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3500);
+  }
+
+  /* Form submit — your original fetch logic preserved */
+  document.getElementById('registerForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value;
+    const confirm  = document.getElementById('confirmPassword').value;
+
+    if (!username || !password) { showToast('Please fill in all fields.', true); return; }
+    if (password !== confirm)   { showToast('Passwords do not match.', true); return; }
+
+    const btn = document.getElementById('registerBtn');
+    btn.disabled = true;
+    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Creating...`;
+
+    fetch('/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    })
+    .then(res => {
+      // Catch HTTP-level errors (403, 409, 500, etc.) — these don't trigger .catch()
+      if (!res.ok) {
+        return res.text().then(text => {
+          throw new Error(text || `Server error: ${res.status}`);
+        });
+      }
+      return res.json();
+    })
+    .then(() => {
+      showToast('Account created! Redirecting…');
+      setTimeout(() => { window.location.href = '/login.html'; }, 1800);
+    })
+    .catch(err => {
+      console.error('Registration error:', err);
+      showToast(err.message || 'Something went wrong. Please try again.', true);
+      btn.disabled = false;
+      btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg> Create Account`;
+    });
+  });
+</script>
+</body>
+</html>
